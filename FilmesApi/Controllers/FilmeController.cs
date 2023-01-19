@@ -9,20 +9,34 @@ public class FilmeController : ControllerBase
 {
 
     private static List<Filme> filmes = new List<Filme>();
+    private static int id = 0;
 
-    //inserção de filmes
     [HttpPost]
     public void AdicionaFilme([FromBody] Filme filme)
     {
+        //filmes.Id = id++;
         filmes.Add(filme);
         Console.WriteLine(filme.Titulo);
         Console.WriteLine(filme.Duracao);
     }
 
-    //lista dos filmes
     [HttpGet]
-    public List<Filme> RecuperaFilmes()
+    public IEnumerable<Filme> RecuperaFilmes()
     {
         return filmes;
     }
+
+    // ...
+
+    public Filme? RecuperaFilmePorId(int id)
+    {
+        return filmes.FirstOrDefault(filme => filme.Id == id);
+    }
+
+    // 
+    //[HttpGet("{id}")]
+    //public Filme? RecuperaFilmePorId(int id)
+    //{
+       // return filmes.FirstOrDefault(filme => filme.Id == id);
+    //}
 }

@@ -3,8 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+//Inserindo string de conexão com o MySql
 var connectionString = builder.Configuration.GetConnectionString("FilmeConnection");
 
+//fazer o mapeamento de fimle para filme Dto automaticamente
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+// contexo filme para conectar no banco de dados MySql
 builder.Services.AddDbContext<FilmeContext>(opts =>
 opts.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 

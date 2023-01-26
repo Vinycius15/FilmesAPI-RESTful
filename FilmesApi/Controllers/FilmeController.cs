@@ -3,6 +3,8 @@ using FilmesApi.Data;
 using FilmesApi.Data.DTOs;
 using FilmesApi.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace FilmesApi.Controllers;
 
@@ -21,7 +23,7 @@ public class FilmeController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult IActionResult (
+    public IActionResult IActionResult(
         [FromBody] CreateFilmeDto filmeDto)
     {
 
@@ -43,14 +45,14 @@ public class FilmeController : ControllerBase
         _context.SaveChanges();
 
         //retorno
-        return CreatedAtAction(nameof(RecuperaFilmePorId), 
-                               new { id = filme.Id }, 
+        return CreatedAtAction(nameof(RecuperaFilmePorId),
+                               new { id = filme.Id },
                                filme);
     }
 
     [HttpGet]
-    public IEnumerable<Filme> RecuperaFilmes([FromQuery] int skip = 0, 
-                                             [FromQuery] int take=50 )
+    public IEnumerable<Filme> RecuperaFilmes([FromQuery] int skip = 0,
+                                             [FromQuery] int take = 50)
     {
         return _context.Filmes.Skip(skip).Take(take);
     }
@@ -62,5 +64,16 @@ public class FilmeController : ControllerBase
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
         if (filme == null) return NotFound();
         return Ok(filme);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult AtualizaFilme( int id, 
+        [FromBody] UpdateFilmeDto filmeDto )
+    {
+        var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
+        if (filme == null) return NotFound();
+        _mapper.Map(filmeDto, filme);
+        _context.SaveChances();
+            return NoContent();
     }
 }

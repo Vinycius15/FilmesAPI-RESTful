@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FilmesApi.Controllers;
 
@@ -52,10 +53,11 @@ public class FilmeController : ControllerBase
     }
 
     [HttpGet]
-    public IEnumerable<Filme> RecuperaFilmes([FromQuery] int skip = 0,
+    public IEnumerable<ReadFilmeDto> RecuperaFilmes([FromQuery] int skip = 0,
                                              [FromQuery] int take = 50)
     {
-        return _context.Filmes.Skip(skip).Take(take);
+        return _mapper.Map<List<ReadFilmeDto>>(
+            _context.Filmes.Skip(skip).Take(take));
     }
 
     // filme especifico
@@ -64,7 +66,8 @@ public class FilmeController : ControllerBase
     {
         var filme = _context.Filmes.FirstOrDefault(filme => filme.Id == id);
         if (filme == null) return NotFound();
-        return Ok(filme);
+        var filmeDto = _mapper.Map<ReadFilmeDto>(filme);
+        return Ok(filmeDto);
     }
 
   
@@ -104,6 +107,17 @@ public class FilmeController : ControllerBase
         }
         //validado
         _mapper.Map(filmeParaAtualizar, filme);
+        _context.SaveChanges();
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeletaFilme(int id)
+    {
+        var filme = _context.Filmes.FirstOrDefault(
+            filme => filme.Id == id);
+        if (filme == null) return NotFound();
+        _context.Remove(filme);
         _context.SaveChanges();
         return NoContent();
     }

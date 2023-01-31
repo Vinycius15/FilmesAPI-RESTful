@@ -19,4 +19,4 @@ public class CreateFilmeDto
     [Required(ErrorMessage = "O genêro é obrigátório")]
     [StringLength(200, ErrorMessage = "O genêro não pode ultrapassar 200 caracteres")]
     public string Genero { get; set; }
-}
+} 

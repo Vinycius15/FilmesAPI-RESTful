@@ -68,7 +68,7 @@ public class FilmeController : ControllerBase
     }
 
   
-    [HttpPut("{id}")]
+    [HttpPut("{id}")] // atualiza filme completo
     public IActionResult AtualizaFilme(int id,
     [FromBody] UpdateFilmeDto filmeDto)
     {
@@ -80,4 +80,31 @@ public class FilmeController : ControllerBase
         return NoContent();
     }
 
+    [HttpPatch("{id}")] // atualiza filme parcial
+    public IActionResult AtualizaFilmeParcial (int id, 
+        JsonPatchDocument<UpdateFilmeDto> patch)
+    {
+        var filme = _context.Filmes.FirstOrDefault
+            (filme => filme.Id == id);
+        if (filme == null) return NotFound();
+
+        //converter o filme do banco para o updatefilmedto para apliicar as regras de valçidação
+        //caso o dto seja válido, converte de volta para o filme
+
+        var filmeParaAtualizar = _mapper.Map<UpdateFilmeDto>(filme);
+
+        //válido?
+        patch.ApplyTo(filmeParaAtualizar, ModelState); // se for válido essa aplicação então
+                                                       // converte de volta para um filme
+
+        //fazendo a validação
+        if(!TryValidateModel(filmeParaAtualizar))
+        {
+            return ValidationProblem(ModelState); // não validado
+        }
+        //validado
+        _mapper.Map(filmeParaAtualizar, filme);
+        _context.SaveChanges();
+        return NoContent();
+    }
 }

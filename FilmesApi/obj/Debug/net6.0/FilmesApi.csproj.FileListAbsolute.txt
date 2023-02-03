@@ -81,3 +81,5 @@ C:\Users\vinyz\Documents\Visual Studio 2022\FilmesAPI\FilmesApi\bin\Debug\net6.0
 C:\Users\vinyz\Documents\Visual Studio 2022\FilmesAPI\FilmesApi\bin\Debug\net6.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
 C:\Users\vinyz\Documents\Visual Studio 2022\FilmesAPI\FilmesApi\bin\Debug\net6.0\Newtonsoft.Json.dll
 C:\Users\vinyz\Documents\Visual Studio 2022\FilmesAPI\FilmesApi\bin\Debug\net6.0\Newtonsoft.Json.Bson.dll
+C:\Users\vinyz\Documents\Visual Studio 2022\FilmesAPI\FilmesApi\bin\Debug\net6.0\FilmesApi.xml
+C:\Users\vinyz\Documents\Visual Studio 2022\FilmesAPI\FilmesApi\obj\Debug\net6.0\FilmesApi.xml
